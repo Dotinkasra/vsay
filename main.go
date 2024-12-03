@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 
 	"github.com/faiface/beep"
@@ -17,17 +18,19 @@ import (
 var AivisSpeechEndpoint string = "http://localhost:10101"
 
 type Speaker struct {
-	Name   string `json:"name"`
-	Uuid   string `json:"speaker_uuid"`
-	Styles []struct {
-		Name string `json:"name"`
-		Id   int    `json:"id"`
-		Type string `json:"type"`
-	} `json:"styles"`
-	Version            string `json:"version"`
+	Name               string  `json:"name"`
+	Uuid               string  `json:"speaker_uuid"`
+	Styles             []Style `json:"styles"`
+	Version            string  `json:"version"`
 	Supported_features struct {
 		Permited_synchesis_morphing string `json:"permitted_synthesis_morphing"`
 	} `json:"supported_features"`
+}
+
+type Style struct {
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
 }
 
 func getSpeakers() []Speaker {
@@ -46,10 +49,10 @@ func getSpeakers() []Speaker {
 	return speakers
 }
 
-func getAudioQuery(text string, speaker string) json.RawMessage {
+func (s *Style) getAudioQuery(text string) json.RawMessage {
 	uri_param := url.Values{}
 	uri_param.Set("text", text)
-	uri_param.Set("speaker", speaker)
+	uri_param.Set("speaker", strconv.Itoa(s.Id))
 
 	uri := AivisSpeechEndpoint + "/audio_query?" + uri_param.Encode()
 
@@ -99,6 +102,14 @@ func getAudio(audio_query json.RawMessage) {
 }
 
 func main() {
-	audio_query := getAudioQuery("こんにちは", "888753765")
-	getAudio(audio_query)
+	for i, s := range getSpeakers() {
+		fmt.Printf("%d: %s\n", i, s.Name)
+		for _, style := range s.Styles {
+			fmt.Printf("  %d: %s\n", style.Id, style.Name)
+			if style.Id == 888753765 {
+				audio_query := style.getAudioQuery("こんにちは")
+				getAudio(audio_query)
+			}
+		}
+	}
 }
