@@ -1,4 +1,4 @@
-module AivisS
+module vsay
 
 go 1.23.2
 
