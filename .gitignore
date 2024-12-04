@@ -1,3 +1,4 @@
 .vscode
 .Spotlight
 .DS_Store
+dist/
