@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/url"
 	"strconv"
-	"vsay/pkg/audio"
 	"vsay/pkg/util"
 )
 
@@ -53,7 +52,7 @@ type Style struct {
 	Type string `json:"type"`
 }
 
-func (s *Style) GetAudioQuery(host string, text string) AudioQuery {
+func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
 	uri_param := url.Values{}
 	uri_param.Set("text", text)
 	uri_param.Set("speaker", strconv.Itoa(s.Id))
@@ -73,7 +72,7 @@ func (s *Style) GetAudioQuery(host string, text string) AudioQuery {
 	return query
 }
 
-func (s *Style) GetAudio(host string, query AudioQuery) {
+func (s *Style) GetAudio(host string, query AudioQuery) []byte {
 	jsonQuery, _ := json.Marshal(query)
 	uri_param := url.Values{}
 	uri_param.Set("speaker", strconv.Itoa(s.Id))
@@ -82,5 +81,5 @@ func (s *Style) GetAudio(host string, query AudioQuery) {
 	endpoint := uri + "?" + uri_param.Encode()
 
 	body, _ := util.HttpPost(endpoint, bytes.NewBuffer(jsonQuery))
-	audio.PlayAudio(body)
+	return body
 }
