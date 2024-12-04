@@ -124,5 +124,5 @@ $ cat ./text.txt | vsay say -id 888753765 -intonation 1.0 -accent 4
  - プリセット機能
  - クエリ編集機能
 
-## License
+# License
 MIT
