@@ -1,4 +1,4 @@
-package vsay
+package sub
 
 import (
 	"fmt"
