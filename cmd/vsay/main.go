@@ -60,6 +60,7 @@ func main() {
 				&cli.IntFlag{
 					Name:     "number",
 					Usage:    "The speaker number as displayed by the `ls` command.",
+					Aliases:  []string{"n"},
 					Required: false,
 				},
 				&cli.IntFlag{
@@ -116,8 +117,8 @@ func main() {
 				speakers := e.ShowSpeakers()
 				var style speaker.Style
 				if c.Int("id") == 0 {
-					sp := speakers[c.Int("speaker-number")]
-					st := sp.Styles[c.Int("style-number")]
+					sp := speakers[c.Int("number")]
+					st := sp.Styles[c.Int("style")]
 					style = st
 
 				} else {
