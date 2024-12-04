@@ -1,6 +1,11 @@
 package sub
 
 import (
+	"io"
+	"log"
+	"os"
+	"strings"
+	"unsafe"
 	"vsay/pkg/audio"
 	"vsay/pkg/engine"
 	"vsay/pkg/engine/speaker"
@@ -90,8 +95,20 @@ func Say(c *cli.Context, e engine.Engine) error {
 			}
 		}
 	}
+	text := c.Args().First()
+	if text == "" {
+		stdin := os.Stdin
+		t, err := io.ReadAll(stdin)
+		if err != nil {
+			log.Fatal(err)
+			panic(err)
+		}
+		text = *(*string)(unsafe.Pointer(&t))
+	}
+	text = strings.TrimSpace(text)
+	text = strings.TrimSuffix(text, "\n")
 
-	query := style.CreateAudioQuery(e.MyHost(), c.Args().First())
+	query := style.CreateAudioQuery(e.MyHost(), text)
 	query.SpeedScale = c.Float64("speed")
 	query.IntonationScale = c.Float64("intonation")
 	query.TempoDynamicsScale = c.Float64("tempo")
