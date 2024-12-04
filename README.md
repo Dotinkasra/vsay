@@ -92,7 +92,7 @@ USAGE:
 
 OPTIONS:
    --id ID                  Style ID. This takes priority over the speaker number option. (default: 0)
-   --number ls              The speaker number as displayed by the ls command. (default: 0)
+   --number ls, -n ls       The speaker number as displayed by the ls command. (default: 0)
    --style ls               The style number as displayed by the ls command. (default: 0)
    --accent index           Specify the accent by its index in the string. (default: -1)
    --speed 0.5 to 2.0       Set the speaking speed. Valid range: 0.5 to 2.0. (default: 1)
@@ -101,6 +101,7 @@ OPTIONS:
    --pitch -0.15 to 0.15    Set the pitch. Valid range: -0.15 to 0.15. (default: 0)
    --save PATH, -s PATH     Specify the PATH to save the audio file.
    --quiet, -q              Don't play audio. (default: false)
+   --b64, -b                Outputs audio as base64 encoding to Stdout. (default: false)
    --help, -h               show help
 ```
 
@@ -116,6 +117,11 @@ $ vsay say -n 0 -style 5 "こんにちは"
 ```bash
 $ echo "こんにちは" | vsay say -id 888753765 -intonation 1.0 -accent 4 
 $ cat ./text.txt | vsay say -id 888753765 -intonation 1.0 -accent 4 
+```
+
+合成した音声を`Base64`として標準出力することも可能です。
+```bash
+$ echo "こんにちは" | vsay say -id 888753765 -intonation 1.0 -accent 4 -b -q >> b64out.txt
 ```
 
 # 未実装の機能

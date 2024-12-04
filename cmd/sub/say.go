@@ -1,6 +1,8 @@
 package sub
 
 import (
+	"encoding/base64"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -74,6 +76,12 @@ func GetSayFlags() []cli.Flag {
 			Usage:    "Don't play audio.",
 			Required: false,
 		},
+		&cli.BoolFlag{
+			Name:     "b64",
+			Aliases:  []string{"b"},
+			Usage:    "Outputs audio as base64 encoding to Stdout.",
+			Required: false,
+		},
 	}
 	return sayFlags
 }
@@ -115,12 +123,17 @@ func Say(c *cli.Context, e engine.Engine) error {
 	if c.Int("accent") != -1 {
 		query.AccentPhrases[0].Accent = c.Int("accent")
 	}
-	raw_audio := style.GetAudio(e.MyHost(), query)
+
+	rawAudio := style.GetAudio(e.MyHost(), query)
 	if !c.Bool("quiet") {
-		audio.PlayAudio(raw_audio)
+		audio.PlayAudio(rawAudio)
 	}
 	if c.String("save") != "" {
-		audio.SaveAudio(raw_audio, c.String("save"))
+		audio.SaveAudio(rawAudio, c.String("save"))
+	}
+	if c.Bool("b64") {
+		b64Audio := base64.StdEncoding.EncodeToString(rawAudio)
+		fmt.Print(b64Audio)
 	}
 	return nil
 }
