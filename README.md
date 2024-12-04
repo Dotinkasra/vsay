@@ -17,6 +17,9 @@ $ go build
 ```
 
 ## 使用方法
+デフォルトのポート番号はAivisSpeechのものになります（10101）。  
+あらかじめVOICEVOX、COEIROINK、AivisSpeechのいずれかのエンジンを起動しておく必要があります。
+
 ```bash
 $ vsay -h
 NAME:
@@ -37,7 +40,7 @@ GLOBAL OPTIONS:
 ```
 
 ```bash
-$ vsay ls 
+$ vsay ls
 0: Anneli
   0: 888753760: ノーマル
   1: 888753761: 通常
@@ -45,34 +48,8 @@ $ vsay ls
   3: 888753763: 落ち着き
   4: 888753764: 上機嫌
   5: 888753765: 怒り・悲しみ
-```
-
-```bash
-$ vsay say -h
-NAME:
-   vsay say - Say something
-
-USAGE:
-   vsay say [command options]
-
-OPTIONS:
-   --id ID                  Style ID. This takes priority over the speaker number option. (default: 0)
-   --number ls              The speaker number as displayed by the ls command. (default: 0)
-   --style ls               The style number as displayed by the ls command. (default: 0)
-   --accent index           Specify the accent by its index in the string. (default: -1)
-   --speed 0.5 to 2.0       Set the speaking speed. Valid range: 0.5 to 2.0. (default: 1)
-   --intonation 0.0 to 2.0  Set the intonation, affecting the style's strength. Valid range: 0.0 to 2.0. (default: 1)
-   --tempo 0.0 to 2.0       Set the tempo. Valid range: 0.0 to 2.0. (default: 1)
-   --pitch -0.15 to 0.15    Set the pitch. Valid range: -0.15 to 0.15. (default: 0)
-   --save PATH, -s PATH     Specify the PATH to save the audio file.
-   --quiet, -q              Don't play audio. (default: false)
-   --help, -h               show help
-```
-
-IDか上記のlsオプションで表示された番号を指定できます。
-```bash
-$ vsay say -id 888753765 -intonation 1.0 -accent 4 -s ./test.wav "こんにちは"
-$ vsay say --number 0 --style 5 "こんにちは"
+1: white
+  0: 706073888: ノーマル
 ```
 
 例えばVOICEVOXのポートを指定する場合は以下のようになります。
@@ -101,6 +78,35 @@ $ vsay -p 50021 ls
 4: 波音リツ
   0: 9: ノーマル
   1: 65: クイーン
+```
+
+```bash
+$ vsay say -h
+NAME:
+   vsay say - Say something
+
+USAGE:
+   vsay say [command options]
+
+OPTIONS:
+   --id ID                  Style ID. This takes priority over the speaker number option. (default: 0)
+   --number ls              The speaker number as displayed by the ls command. (default: 0)
+   --style ls               The style number as displayed by the ls command. (default: 0)
+   --accent index           Specify the accent by its index in the string. (default: -1)
+   --speed 0.5 to 2.0       Set the speaking speed. Valid range: 0.5 to 2.0. (default: 1)
+   --intonation 0.0 to 2.0  Set the intonation, affecting the style's strength. Valid range: 0.0 to 2.0. (default: 1)
+   --tempo 0.0 to 2.0       Set the tempo. Valid range: 0.0 to 2.0. (default: 1)
+   --pitch -0.15 to 0.15    Set the pitch. Valid range: -0.15 to 0.15. (default: 0)
+   --save PATH, -s PATH     Specify the PATH to save the audio file.
+   --quiet, -q              Don't play audio. (default: false)
+   --help, -h               show help
+```
+
+IDか上記の`vsay ls`オプションで表示された番号を指定できます。 
+
+```bash
+$ vsay say -id 888753765 -intonation 1.0 -accent 4 -s ./test.wav "こんにちは"
+$ vsay say -n 0 -style 5 "こんにちは"
 ```
 
 # 未実装の機能
