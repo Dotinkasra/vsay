@@ -12,6 +12,10 @@ func HttpGet(url string) ([]byte, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode != http.StatusOK {
+		return nil, err
+	}
+
 	return io.ReadAll(resp.Body)
 }
 
@@ -21,6 +25,10 @@ func HttpPost(url string, body io.Reader) ([]byte, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, err
+	}
 
 	return io.ReadAll(resp.Body)
 }

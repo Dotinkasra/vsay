@@ -3,6 +3,7 @@ package speaker
 import (
 	"bytes"
 	"encoding/json"
+	"log"
 	"net/url"
 	"strconv"
 	"vsay/pkg/util"
@@ -62,12 +63,12 @@ func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
 
 	body, err := util.HttpPost(endpoint, nil)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
 	var query AudioQuery
 	if err := json.Unmarshal(body, &query); err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	return query
 }
@@ -80,6 +81,9 @@ func (s *Style) GetAudio(host string, query AudioQuery) []byte {
 	uri, _ := url.JoinPath(host, "synthesis")
 	endpoint := uri + "?" + uri_param.Encode()
 
-	body, _ := util.HttpPost(endpoint, bytes.NewBuffer(jsonQuery))
+	body, err := util.HttpPost(endpoint, bytes.NewBuffer(jsonQuery))
+	if err != nil {
+		log.Panic(err)
+	}
 	return body
 }

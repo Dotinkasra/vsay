@@ -100,8 +100,7 @@ func Say(c *cli.Context, e engine.Engine) error {
 		stdin := os.Stdin
 		t, err := io.ReadAll(stdin)
 		if err != nil {
-			log.Fatal(err)
-			panic(err)
+			log.Panic(err)
 		}
 		text = *(*string)(unsafe.Pointer(&t))
 	}

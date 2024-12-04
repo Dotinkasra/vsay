@@ -14,7 +14,7 @@ import (
 func PlayAudio(data []byte) {
 	st, format, err := wav.Decode(bytes.NewReader(data))
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	defer st.Close()
 
@@ -29,13 +29,13 @@ func PlayAudio(data []byte) {
 func SaveAudio(data []byte, filename string) {
 	f, err := os.Create(filename)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	defer f.Close()
 
 	n, err := f.Write(data)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 	_ = n
 }

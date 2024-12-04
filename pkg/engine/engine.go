@@ -2,6 +2,7 @@ package engine
 
 import (
 	"encoding/json"
+	"log"
 	"net/url"
 	"strconv"
 	"vsay/pkg/engine/speaker"
@@ -21,12 +22,12 @@ func (e *Engine) ShowSpeakers() []speaker.Speaker {
 	uri, _ := url.JoinPath(e.MyHost(), "speakers")
 	body, err := util.HttpGet(uri)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
 	var speakers []speaker.Speaker
 	if err := json.Unmarshal(body, &speakers); err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	return speakers
 }
