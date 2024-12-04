@@ -39,6 +39,8 @@ GLOBAL OPTIONS:
    --help, -h              show help
 ```
 
+### 話者一覧の表示
+ここで表示される番号は`vsay say`コマンドのIDとして使用できます。
 ```bash
 $ vsay ls
 0: Anneli
@@ -79,7 +81,7 @@ $ vsay -p 50021 ls
   0: 9: ノーマル
   1: 65: クイーン
 ```
-
+### 音声の作成
 ```bash
 $ vsay say -h
 NAME:
