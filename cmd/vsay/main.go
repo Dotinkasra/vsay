@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"slices"
 	"vsay/cmd/sub"
 	"vsay/pkg/engine"
 
@@ -19,7 +20,8 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "vsay"
 	app.Usage = "Synthesized voice is played from the terminal."
-	app.Flags = []cli.Flag{
+
+	baseFlags := []cli.Flag{
 		&cli.StringFlag{
 			Name:        "host",
 			Usage:       "Host address",
@@ -40,6 +42,7 @@ func main() {
 			Name:    "ls",
 			Aliases: []string{"l"},
 			Usage:   "Show speakers",
+			Flags:   baseFlags,
 			Action: func(c *cli.Context) error {
 				e := engine.Engine{Host: host, Port: port}
 				return sub.Ls(e)
@@ -49,7 +52,7 @@ func main() {
 			Name:    "say",
 			Aliases: []string{"s"},
 			Usage:   "Say something",
-			Flags:   sub.GetSayFlags(),
+			Flags:   slices.Concat(baseFlags, sub.GetSayFlags()),
 			Action: func(c *cli.Context) error {
 				e := engine.Engine{Host: host, Port: port}
 				return sub.Say(c, e)

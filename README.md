@@ -34,13 +34,26 @@ COMMANDS:
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
+   --help, -h  show help
+```
+
+### 話者一覧の表示
+```bash
+$ vsay ls -h
+NAME:
+   vsay ls - Show speakers
+
+USAGE:
+   vsay ls [command options]
+
+OPTIONS:
    --host value            Host address (default: "http://localhost")
    --port value, -p value  Port number (default: 10101)
    --help, -h              show help
 ```
 
-### 話者一覧の表示
 ここで表示される番号は`vsay say`コマンドのIDとして使用できます。
+
 ```bash
 $ vsay ls
 0: Anneli
@@ -56,7 +69,7 @@ $ vsay ls
 
 例えばVOICEVOXのポートを指定する場合は以下のようになります。
 ```bash
-$ vsay -p 50021 ls
+$ vsay ls -p 50021 
 0: 四国めたん
   0: 2: ノーマル
   1: 0: あまあま
@@ -91,6 +104,8 @@ USAGE:
    vsay say [command options]
 
 OPTIONS:
+   --host value             Host address (default: "http://localhost")
+   --port value, -p value   Port number (default: 10101)
    --id ID                  Style ID. This takes priority over the speaker number option. (default: 0)
    --number ls, -n ls       The speaker number as displayed by the ls command. (default: 0)
    --style ls               The style number as displayed by the ls command. (default: 0)
