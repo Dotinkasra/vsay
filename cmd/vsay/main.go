@@ -20,7 +20,7 @@ func main() {
 
 	app := cli.NewApp()
 	app.Name = "vsay"
-	app.Usage = "Test app for speakers"
+	app.Usage = "Synthesized voice is played from the terminal."
 	app.Flags = []cli.Flag{
 		&cli.StringFlag{
 			Name:        "host",
@@ -102,7 +102,7 @@ func main() {
 					Aliases:  []string{"s"},
 					Usage:    "Specify the `PATH` to save the audio file.",
 					Value:    "",
-					Required: true,
+					Required: false,
 				},
 				&cli.BoolFlag{
 					Name:     "quiet",
