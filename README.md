@@ -1,9 +1,14 @@
 
 # VOICEVOX Engine CLI tool
 
-VOICEVOX Engineまたはその互換APIサーバをコマンドラインから実行します。
+VOICEVOX Engineまたはその互換APIサーバへのリクエストをコマンドラインから実行します。  
+音声の再生、保存が可能です。
 
-## Installation
+- [voicevox_engine](https://github.com/VOICEVOX/voicevox_engine)
+- [COEIROINK(v1)](https://coeiroink.com/)
+- [AivisSpeech-Engine](https://github.com/Aivis-Project/AivisSpeech-Engine)
+
+## インストール
 
 ```bash
 $ git clone https://github.com/Dotinkasra/vsay
@@ -11,7 +16,7 @@ $ cd vsay/cmd/vasy
 $ go build 
 ```
 
-## Usage
+## 使用方法
 ```bash
 $ vsay -h
 NAME:
@@ -69,5 +74,12 @@ IDか上記のlsオプションで表示された番号を指定できます。
 $ say -id 888753765 -intonation 1.0 -accent 4 -s ./test.wav "こんにちは"
 $ say --number 0 --style 5 "こんにちは"
 ```
+
+# 未実装の機能
+ - ユーザー辞書機能
+ - 設定機能
+ - プリセット機能
+ - クエリ編集機能
+
 ## License
 MIT
