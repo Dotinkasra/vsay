@@ -13,12 +13,12 @@ type Engine struct {
 	Port int
 }
 
-func (e *Engine) GetHost() string {
+func (e *Engine) MyHost() string {
 	return e.Host + ":" + strconv.Itoa(e.Port)
 }
 
-func (e *Engine) GetSpeakers() []speaker.Speaker {
-	uri, _ := url.JoinPath(e.GetHost(), "speakers")
+func (e *Engine) ShowSpeakers() []speaker.Speaker {
+	uri, _ := url.JoinPath(e.MyHost(), "speakers")
 	body, err := util.HttpGet(uri)
 	if err != nil {
 		panic(err)

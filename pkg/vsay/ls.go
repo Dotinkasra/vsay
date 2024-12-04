@@ -8,7 +8,7 @@ import (
 )
 
 func Ls(e engine.Engine) error {
-	for i, s := range e.GetSpeakers() {
+	for i, s := range e.ShowSpeakers() {
 		color.Red(fmt.Sprintf("%d: %s\n", i, s.Name))
 		for j, style := range s.Styles {
 			color.Green(fmt.Sprintf("  %d: %d: %s\n", j, style.Id, style.Name))

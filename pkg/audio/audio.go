@@ -2,6 +2,8 @@ package audio
 
 import (
 	"bytes"
+	"log"
+	"os"
 	"time"
 
 	"github.com/faiface/beep"
@@ -22,4 +24,18 @@ func PlayAudio(data []byte) {
 		done <- true
 	})))
 	<-done
+}
+
+func SaveAudio(data []byte, filename string) {
+	f, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+
+	n, err := f.Write(data)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_ = n
 }
