@@ -54,12 +54,12 @@ type Style struct {
 }
 
 func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
-	uri_param := url.Values{}
-	uri_param.Set("text", text)
-	uri_param.Set("speaker", strconv.Itoa(s.Id))
+	urlParam := url.Values{}
+	urlParam.Set("text", text)
+	urlParam.Set("speaker", strconv.Itoa(s.Id))
 
 	uri, _ := url.JoinPath(host, "audio_query")
-	endpoint := uri + "?" + uri_param.Encode()
+	endpoint := uri + "?" + urlParam.Encode()
 
 	body, err := util.HttpPost(endpoint, nil)
 	if err != nil {
@@ -75,11 +75,11 @@ func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
 
 func (s *Style) GetAudio(host string, query AudioQuery) []byte {
 	jsonQuery, _ := json.Marshal(query)
-	uri_param := url.Values{}
-	uri_param.Set("speaker", strconv.Itoa(s.Id))
+	urlParam := url.Values{}
+	urlParam.Set("speaker", strconv.Itoa(s.Id))
 
 	uri, _ := url.JoinPath(host, "synthesis")
-	endpoint := uri + "?" + uri_param.Encode()
+	endpoint := uri + "?" + urlParam.Encode()
 
 	body, err := util.HttpPost(endpoint, bytes.NewBuffer(jsonQuery))
 	if err != nil {
