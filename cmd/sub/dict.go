@@ -32,30 +32,30 @@ func (scmd *DictAdd) GetFlags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     "surface",
 			Aliases:  []string{"w"},
-			Usage:    "show speakers",
+			Usage:    "The surface form of the `word`.",
 			Required: true,
 		},
 		&cli.StringFlag{
 			Name:     "pronunciation",
 			Aliases:  []string{"y"},
-			Usage:    "show dictionaries",
+			Usage:    "Pronunciation of words (`katakana`)",
 			Required: true,
 		},
 		&cli.IntFlag{
 			Name:     "accent",
 			Aliases:  []string{"a"},
-			Usage:    "",
+			Usage:    "Accented type (refers to where the sound goes down)",
 			Required: true,
 		},
 		&cli.StringFlag{
 			Name:     "type",
 			Aliases:  []string{"t"},
-			Usage:    "",
+			Usage:    "One of the following: PROPER_NOUN, COMMON_NOUN, VERB, ADJECTIVE,SUFFIX",
 			Required: false,
 		},
 		&cli.IntFlag{
 			Name:     "priority",
-			Usage:    "",
+			Usage:    "Word priority (integer from `0 to 10`).",
 			Required: false,
 		},
 	}
