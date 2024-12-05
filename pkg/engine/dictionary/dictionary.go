@@ -28,7 +28,7 @@ type Dictionary struct {
 type WordType int
 
 const (
-	PROPER_NOUN WordType = iota
+	PROPER_NOUN WordType = iota + 1
 	COMMON_NOUN
 	VERB
 	ADJECTIVE
@@ -37,10 +37,10 @@ const (
 
 type DictRequest struct {
 	Surface       string
-	pronunciation string
-	accent_type   int
-	word_type     *WordType
-	priority      *int
+	Pronunciation string
+	AccentType    int
+	WordType      *WordType
+	Priority      *int
 }
 
 func (w WordType) String() string {
@@ -49,21 +49,22 @@ func (w WordType) String() string {
 
 func (d *DictRequest) RegisterUserDict(host string) (string, error) {
 	uri, _ := url.JoinPath(host, "user_dict_word")
-	url_param := url.Values{}
-	url_param.Set("surface", d.Surface)
-	url_param.Set("pronunciation", d.pronunciation)
-	url_param.Set("accent_type", strconv.Itoa(d.accent_type))
-	if d.word_type != nil {
-		url_param.Set("word_type", d.word_type.String())
+	urlParam := url.Values{}
+	urlParam.Set("surface", d.Surface)
+	urlParam.Set("pronunciation", d.Pronunciation)
+	urlParam.Set("accent_type", strconv.Itoa(d.AccentType))
+	if d.WordType != nil {
+		urlParam.Set("word_type", d.WordType.String())
 	}
-	if d.priority != nil {
-		url_param.Set("priority", strconv.Itoa(*d.priority))
+	if d.Priority != nil {
+		urlParam.Set("priority", strconv.Itoa(*d.Priority))
 	}
-	endpoint := uri + "?" + url_param.Encode()
+	endpoint := uri + "?" + urlParam.Encode()
 	resp, err := util.HttpPost(endpoint, nil)
 	if err != nil {
 		return "", err
 	}
+
 	return *(*string)(unsafe.Pointer(&resp)), nil
 
 }
