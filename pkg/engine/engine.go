@@ -2,12 +2,15 @@ package engine
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 	"strconv"
 	"vsay/pkg/engine/dictionary"
 	"vsay/pkg/engine/speaker"
 	"vsay/pkg/util"
+
+	"github.com/fatih/color"
 )
 
 type Engine struct {
@@ -44,4 +47,20 @@ func (e *Engine) ShowUserDict() map[string]dictionary.Dictionary {
 		log.Panic(err)
 	}
 	return userDict
+}
+
+func (e *Engine) DeleteDict(uuid string) error {
+	uri, err := url.JoinPath(e.MyHost(), "user_dict_word", uuid)
+	if err != nil {
+		color.Red(fmt.Sprintln("Error: ホスト名かポートを間違えている可能性があります。"))
+		log.Panic(err)
+	}
+	body, err := util.HttpDelete(uri, nil)
+	if err != nil {
+		color.Red(fmt.Sprintln("Error: "))
+		log.Panic(err)
+	}
+	fmt.Println(string(body))
+	return err
+
 }
