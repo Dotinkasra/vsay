@@ -15,7 +15,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func GetSayFlags() []cli.Flag {
+type Say struct {
+	SubCommand
+}
+
+func (scmd *Say) GetFlags() []cli.Flag {
 	sayFlags := []cli.Flag{
 		&cli.IntFlag{
 			Name:     "id",
@@ -86,7 +90,9 @@ func GetSayFlags() []cli.Flag {
 	return sayFlags
 }
 
-func Say(c *cli.Context, e engine.Engine) error {
+func (scmd *Say) Action(c *cli.Context) error {
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+
 	speakers := e.ShowSpeakers()
 	var style speaker.Style
 	if c.Int("id") == 0 {

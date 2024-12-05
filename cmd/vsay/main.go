@@ -5,17 +5,31 @@ import (
 	"os"
 	"slices"
 	"vsay/cmd/sub"
-	"vsay/pkg/engine"
 
 	"github.com/urfave/cli/v2"
 )
 
-//var port int
-//var AivisSpeechEndpoint string = "http://localhost:" + strconv.Itoa(port)
+func MakeFlags(scmd sub.SubCommand) []cli.Flag {
+	baseFlags := []cli.Flag{
+		&cli.StringFlag{
+			Name:  "host",
+			Usage: "Host address",
+			Value: "http://localhost",
+		},
+		&cli.IntFlag{
+			Name:    "port",
+			Usage:   "Port number",
+			Aliases: []string{"p"},
+			Value:   10101,
+		},
+	}
+	return slices.Concat(baseFlags, scmd.GetFlags())
+}
 
 func main() {
-	var host string
-	var port int
+	ls := sub.Ls{}
+	say := sub.Say{}
+	//dict := sub.Dict{}
 
 	app := cli.NewApp()
 	app.Name = "vsay"
@@ -24,17 +38,15 @@ func main() {
 
 	baseFlags := []cli.Flag{
 		&cli.StringFlag{
-			Name:        "host",
-			Usage:       "Host address",
-			Value:       "http://localhost",
-			Destination: &host,
+			Name:  "host",
+			Usage: "Host address",
+			Value: "http://localhost",
 		},
 		&cli.IntFlag{
-			Name:        "port",
-			Usage:       "Port number",
-			Aliases:     []string{"p"},
-			Value:       10101,
-			Destination: &port,
+			Name:    "port",
+			Usage:   "Port number",
+			Aliases: []string{"p"},
+			Value:   10101,
 		},
 	}
 
@@ -43,20 +55,18 @@ func main() {
 			Name:    "ls",
 			Aliases: []string{"l"},
 			Usage:   "Show speakers",
-			Flags:   slices.Concat(baseFlags, sub.GetLsFlags()),
+			Flags:   MakeFlags(&ls),
 			Action: func(c *cli.Context) error {
-				e := engine.Engine{Host: host, Port: port}
-				return sub.Ls(c, e)
+				return ls.Action(c)
 			},
 		},
 		{
 			Name:    "say",
 			Aliases: []string{"s"},
 			Usage:   "Say something",
-			Flags:   slices.Concat(baseFlags, sub.GetSayFlags()),
+			Flags:   MakeFlags(&say),
 			Action: func(c *cli.Context) error {
-				e := engine.Engine{Host: host, Port: port}
-				return sub.Say(c, e)
+				return say.Action(c)
 			},
 		},
 		{
@@ -65,7 +75,6 @@ func main() {
 			Usage:   "Show dictionary",
 			Flags:   baseFlags,
 			Action: func(c *cli.Context) error {
-				//e := engine.Engine{Host: host, Port: port}
 				return nil
 			},
 		},

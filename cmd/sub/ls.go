@@ -8,7 +8,11 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func GetLsFlags() []cli.Flag {
+type Ls struct {
+	SubCommand
+}
+
+func (scmd *Ls) GetFlags() []cli.Flag {
 	lsFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:    "speaker",
@@ -43,7 +47,8 @@ func showDict(e engine.Engine) error {
 	return nil
 }
 
-func Ls(c *cli.Context, e engine.Engine) error {
+func (scmd *Ls) Action(c *cli.Context) error {
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
 	if c.Bool("speaker") {
 		fmt.Printf("Speakers\n")
 		showSpeakers(e)
