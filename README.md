@@ -200,6 +200,7 @@ Success
 
 **辞書から削除する**
 ```bash
+$ vsay dict delete -h
 NAME:
    vsay dict delete - Remove word
 
