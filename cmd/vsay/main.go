@@ -58,6 +58,16 @@ func main() {
 				return sub.Say(c, e)
 			},
 		},
+		{
+			Name:    "dict",
+			Aliases: []string{"d"},
+			Usage:   "Show dictionary",
+			Flags:   baseFlags,
+			Action: func(c *cli.Context) error {
+				e := engine.Engine{Host: host, Port: port}
+				return sub.ShowDict(e)
+			},
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {

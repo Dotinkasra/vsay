@@ -8,23 +8,21 @@ import (
 )
 
 type Dictionary struct {
-	ID struct {
-		Surface               string `json:"surface"`
-		Priority              int    `json:"priority"`
-		ContextID             int    `json:"context_id"`
-		PartOfSpeech          string `json:"part_of_speech"`
-		PartOfSpeechDetail1   string `json:"part_of_speech_detail_1"`
-		PartOfSpeechDetail2   string `json:"part_of_speech_detail_2"`
-		PartOfSpeechDetail3   string `json:"part_of_speech_detail_3"`
-		InflectionalType      string `json:"inflectional_type"`
-		InflectionalForm      string `json:"inflectional_form"`
-		Stem                  string `json:"stem"`
-		Yomi                  string `json:"yomi"`
-		Pronunciation         string `json:"pronunciation"`
-		AccentType            int    `json:"accent_type"`
-		MoraCount             int    `json:"mora_count"`
-		AccentAssociativeRule string `json:"accent_associative_rule"`
-	} `json:""`
+	Surface               string `json:"surface"`
+	Priority              int    `json:"priority"`
+	ContextID             int    `json:"context_id"`
+	PartOfSpeech          string `json:"part_of_speech"`
+	PartOfSpeechDetail1   string `json:"part_of_speech_detail_1"`
+	PartOfSpeechDetail2   string `json:"part_of_speech_detail_2"`
+	PartOfSpeechDetail3   string `json:"part_of_speech_detail_3"`
+	InflectionalType      string `json:"inflectional_type"`
+	InflectionalForm      string `json:"inflectional_form"`
+	Stem                  string `json:"stem"`
+	Yomi                  string `json:"yomi"`
+	Pronunciation         string `json:"pronunciation"`
+	AccentType            int    `json:"accent_type"`
+	MoraCount             int    `json:"mora_count"`
+	AccentAssociativeRule string `json:"accent_associative_rule"`
 }
 
 type WordType int

@@ -33,13 +33,13 @@ func (e *Engine) ShowSpeakers() []speaker.Speaker {
 	return speakers
 }
 
-func (e *Engine) ShowUserDict() []dictionary.Dictionary {
+func (e *Engine) ShowUserDict() map[string]dictionary.Dictionary {
 	uri, _ := url.JoinPath(e.MyHost(), "user_dict")
 	body, err := util.HttpGet(uri)
 	if err != nil {
 		log.Panic(err)
 	}
-	var userDict []dictionary.Dictionary
+	var userDict map[string]dictionary.Dictionary
 	if err := json.Unmarshal(body, &userDict); err != nil {
 		log.Panic(err)
 	}
