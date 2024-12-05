@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/url"
 	"strconv"
+	"vsay/pkg/engine/dictionary"
 	"vsay/pkg/engine/speaker"
 	"vsay/pkg/util"
 )
@@ -30,4 +31,17 @@ func (e *Engine) ShowSpeakers() []speaker.Speaker {
 		log.Panic(err)
 	}
 	return speakers
+}
+
+func (e *Engine) ShowUserDict() []dictionary.Dictionary {
+	uri, _ := url.JoinPath(e.MyHost(), "user_dict")
+	body, err := util.HttpGet(uri)
+	if err != nil {
+		log.Panic(err)
+	}
+	var userDict []dictionary.Dictionary
+	if err := json.Unmarshal(body, &userDict); err != nil {
+		log.Panic(err)
+	}
+	return userDict
 }
