@@ -18,7 +18,7 @@ func (scmd *Ls) GetFlags() []cli.Flag {
 			Name:    "speaker",
 			Aliases: []string{"s"},
 			Usage:   "show speakers",
-			Value:   true,
+			Value:   false,
 		},
 		&cli.BoolFlag{
 			Name:    "dict",
@@ -49,12 +49,20 @@ func showDict(e engine.Engine) error {
 
 func (scmd *Ls) Action(c *cli.Context) error {
 	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
-	if c.Bool("speaker") {
+	speakerFlag := c.Bool("speaker")
+	dictFlag := c.Bool("dict")
+
+	if !(speakerFlag || dictFlag) {
+		speakerFlag = !speakerFlag
+		dictFlag = !dictFlag
+	}
+
+	if speakerFlag {
 		fmt.Printf("Speakers\n")
 		showSpeakers(e)
 		fmt.Println()
 	}
-	if c.Bool("dict") {
+	if dictFlag {
 		fmt.Printf("User dictionary\n")
 		showDict(e)
 		fmt.Println()
