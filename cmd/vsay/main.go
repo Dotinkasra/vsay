@@ -29,26 +29,12 @@ func MakeFlags(scmd sub.SubCommand) []cli.Flag {
 func main() {
 	ls := sub.Ls{}
 	say := sub.Say{}
-	//dict := sub.Dict{}
+	dict := sub.Dict{}
 
 	app := cli.NewApp()
 	app.Name = "vsay"
 	app.Usage = "Synthesized voice is played from the terminal."
 	app.UseShortOptionHandling = true
-
-	baseFlags := []cli.Flag{
-		&cli.StringFlag{
-			Name:  "host",
-			Usage: "Host address",
-			Value: "http://localhost",
-		},
-		&cli.IntFlag{
-			Name:    "port",
-			Usage:   "Port number",
-			Aliases: []string{"p"},
-			Value:   10101,
-		},
-	}
 
 	app.Commands = []*cli.Command{
 		{
@@ -73,9 +59,25 @@ func main() {
 			Name:    "dict",
 			Aliases: []string{"d"},
 			Usage:   "Show dictionary",
-			Flags:   baseFlags,
-			Action: func(c *cli.Context) error {
-				return nil
+			Subcommands: []*cli.Command{
+				{
+					Name:    "add",
+					Aliases: []string{"a"},
+					Usage:   "Add word",
+					Flags:   MakeFlags(&dict.DictAdd),
+					Action: func(c *cli.Context) error {
+						return dict.DictAdd.Action(c)
+					},
+				},
+				{
+					Name:    "delete",
+					Aliases: []string{"r"},
+					Usage:   "Remove word",
+					Flags:   MakeFlags(&dict.DictDelete),
+					Action: func(c *cli.Context) error {
+						return dict.DictDelete.Action(c)
+					},
+				},
 			},
 		},
 	}
