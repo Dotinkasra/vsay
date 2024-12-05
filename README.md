@@ -37,7 +37,7 @@ GLOBAL OPTIONS:
    --help, -h  show help
 ```
 
-### 話者一覧の表示
+### 話者、辞書の表示
 ```bash
 $ vsay ls -h
 NAME:
@@ -49,13 +49,15 @@ USAGE:
 OPTIONS:
    --host value            Host address (default: "http://localhost")
    --port value, -p value  Port number (default: 10101)
+   --speaker, -s           show speakers (default: true)
+   --dict, -d              show dictionaries (default: false)
    --help, -h              show help
 ```
 
-ここで表示される番号は`vsay say`コマンドのIDとして使用できます。
+**話者を表示する**
 
 ```bash
-$ vsay ls
+$ vsay ls -s 
 0: Anneli
   0: 888753760: ノーマル
   1: 888753761: 通常
@@ -67,9 +69,11 @@ $ vsay ls
   0: 706073888: ノーマル
 ```
 
+ここで表示される番号は`vsay say`コマンドのIDとして使用できます。
 例えばVOICEVOXのポートを指定する場合は以下のようになります。
+
 ```bash
-$ vsay ls -p 50021 
+$ vsay ls -s -p 50021 
 0: 四国めたん
   0: 2: ノーマル
   1: 0: あまあま
@@ -94,6 +98,17 @@ $ vsay ls -p 50021
   0: 9: ノーマル
   1: 65: クイーン
 ```
+
+**辞書を表示する**
+```bash
+$ vsay ls -d
+dc94a187-9881-43c9-a9c1-cebbf774a96d:
+        ID: 1348
+        単語: 担々麺
+        読み: タンタンメン
+        アクセント: 3
+```
+
 ### 音声の作成
 ```bash
 $ vsay say -h
@@ -139,9 +154,70 @@ $ cat ./text.txt | vsay say -id 888753765 -intonation 1.0 -accent 4
 $ echo "こんにちは" | vsay say -id 888753765 -intonation 1.0 -accent 4 -b -q >> b64out.txt
 ```
 
+### ユーザー辞書機能
+```bash
+$ vsay dict -h
+NAME:
+   vsay dict - Show dictionary
+
+USAGE:
+   vsay dict command [command options]
+
+COMMANDS:
+   add, a     Add word
+   delete, r  Remove word
+   help, h    Shows a list of commands or help for one command
+
+OPTIONS:
+   --help, -h  show help
+```
+**辞書へ追加する**
+```bash
+$ go run cmd/vsay/main.go dict add -h
+NAME:
+   vsay dict add - Add word
+
+USAGE:
+   vsay dict add [command options]
+
+OPTIONS:
+   --host value                           Host address (default: "http://localhost")
+   --port value, -p value                 Port number (default: 10101)
+   --surface word, -w word                The surface form of the word.
+   --pronunciation katakana, -y katakana  Pronunciation of words (katakana)
+   --accent value, -a value               Accented type (refers to where the sound goes down) (default: 0)
+   --type value, -t value                 One of the following: PROPER_NOUN, COMMON_NOUN, VERB, ADJECTIVE,SUFFIX
+   --priority 0 to 10                     Word priority (integer from 0 to 10). (default: 0)
+   --help, -h                             show help
+```
+以下は`星野瑠美衣`を登録する例です。
+```bash
+$ vsay dict add -w "星野瑠美衣" -y "ホシノルビー" -a 4 -t proper_noun 
+Success
+"c81c2a68-xxxx-xxxx-xxxx-xxxxxxxxx"
+```
+
+**辞書から削除する**
+```bash
+NAME:
+   vsay dict delete - Remove word
+
+USAGE:
+   vsay dict delete [command options]
+
+OPTIONS:
+   --host value            Host address (default: "http://localhost")
+   --port value, -p value  Port number (default: 10101)
+   --help, -h              show help
+```
+先ほど登録した`星野瑠美衣`を削除する場合。
+```bash
+$ vsay dict delete c81c2a68-xxxx-xxxx-xxxx-xxxxxxxxx
+Success
+```
+
 # 未実装の機能
  - アクセントをフレーズ毎に指定する
- - ユーザー辞書機能
  - 設定機能
  - プリセット機能
  - クエリ編集機能
