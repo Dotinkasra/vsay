@@ -20,6 +20,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "vsay"
 	app.Usage = "Synthesized voice is played from the terminal."
+	app.UseShortOptionHandling = true
 
 	baseFlags := []cli.Flag{
 		&cli.StringFlag{
@@ -42,10 +43,10 @@ func main() {
 			Name:    "ls",
 			Aliases: []string{"l"},
 			Usage:   "Show speakers",
-			Flags:   baseFlags,
+			Flags:   slices.Concat(baseFlags, sub.GetLsFlags()),
 			Action: func(c *cli.Context) error {
 				e := engine.Engine{Host: host, Port: port}
-				return sub.Ls(e)
+				return sub.Ls(c, e)
 			},
 		},
 		{
@@ -64,8 +65,8 @@ func main() {
 			Usage:   "Show dictionary",
 			Flags:   baseFlags,
 			Action: func(c *cli.Context) error {
-				e := engine.Engine{Host: host, Port: port}
-				return sub.ShowDict(e)
+				//e := engine.Engine{Host: host, Port: port}
+				return nil
 			},
 		},
 	}
