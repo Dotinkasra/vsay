@@ -174,7 +174,7 @@ OPTIONS:
 ```
 **辞書へ追加する**
 ```bash
-$ go run cmd/vsay/main.go dict add -h
+$ vsay dict add -h
 NAME:
    vsay dict add - Add word
 
