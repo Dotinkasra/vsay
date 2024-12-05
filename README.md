@@ -31,6 +31,7 @@ USAGE:
 COMMANDS:
    ls, l    Show speakers
    say, s   Say something
+   dict, d  Add/Delete dictionary
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
