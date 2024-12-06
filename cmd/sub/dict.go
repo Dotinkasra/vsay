@@ -20,11 +20,11 @@ type Dict struct {
 }
 
 type DictAdd struct {
-	SubCommand
+	Cmd
 }
 
 type DictDelete struct {
-	SubCommand
+	Cmd
 }
 
 func (scmd *DictAdd) GetFlags() []cli.Flag {
@@ -68,23 +68,23 @@ func (scmd *DictAdd) Action(c *cli.Context) error {
 	dictRequest.Surface = c.String("surface")
 	dictRequest.Pronunciation = c.String("pronunciation")
 	dictRequest.AccentType = c.Int("accent")
-	word_type := c.String("type")
-	var convert_word_type dictionary.WordType
-	if word_type != "" {
-		switch strings.ToUpper(word_type) {
+	wordType := c.String("type")
+	var convertWordType dictionary.WordType
+	if wordType != "" {
+		switch strings.ToUpper(wordType) {
 		case "PROPER_NOUN":
-			convert_word_type = dictionary.PROPER_NOUN
+			convertWordType = dictionary.PROPERNOUN
 		case "COMMON_NOUN":
-			convert_word_type = dictionary.COMMON_NOUN
+			convertWordType = dictionary.COMMONNOUN
 		case "VERB":
-			convert_word_type = dictionary.VERB
+			convertWordType = dictionary.VERB
 		case "ADJECTIVE":
-			convert_word_type = dictionary.ADJECTIVE
+			convertWordType = dictionary.ADJECTIVE
 		case "SUFFIX":
-			convert_word_type = dictionary.SUFFIX
+			convertWordType = dictionary.SUFFIX
 		}
 	}
-	dictRequest.WordType = &convert_word_type
+	dictRequest.WordType = &convertWordType
 
 	if c.Int("priority") == 0 {
 		dictRequest.Priority = nil

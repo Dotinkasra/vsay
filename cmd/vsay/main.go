@@ -9,7 +9,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func MakeFlags(scmd sub.SubCommand) []cli.Flag {
+const defaultPort = 10101
+
+func MakeFlags(scmd sub.Cmd) []cli.Flag {
 	baseFlags := []cli.Flag{
 		&cli.StringFlag{
 			Name:  "host",
@@ -20,7 +22,7 @@ func MakeFlags(scmd sub.SubCommand) []cli.Flag {
 			Name:    "port",
 			Usage:   "Port number",
 			Aliases: []string{"p"},
-			Value:   10101,
+			Value:   defaultPort,
 		},
 	}
 	return slices.Concat(baseFlags, scmd.GetFlags())

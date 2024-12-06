@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func HttpGet(url string) ([]byte, error) {
+func HTTPGet(url string) ([]byte, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -21,7 +21,7 @@ func HttpGet(url string) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func HttpPost(url string, body io.Reader) ([]byte, error) {
+func HTTPPost(url string, body io.Reader) ([]byte, error) {
 	resp, err := http.Post(url, "application/json", body)
 	if err != nil {
 		return nil, err
@@ -35,9 +35,9 @@ func HttpPost(url string, body io.Reader) ([]byte, error) {
 	return io.ReadAll(resp.Body)
 }
 
-func HttpDelete(url string, body io.Reader) ([]byte, error) {
+func HTTPDelete(url string, body io.Reader) ([]byte, error) {
 	fmt.Println(url)
-	req, _ := http.NewRequest("DELETE", url, body)
+	req, _ := http.NewRequest(http.MethodDelete, url, body)
 
 	client := new(http.Client)
 	resp, err := client.Do(req)

@@ -28,8 +28,8 @@ type Dictionary struct {
 type WordType int
 
 const (
-	PROPER_NOUN WordType = iota + 1
-	COMMON_NOUN
+	PROPERNOUN WordType = iota + 1
+	COMMONNOUN
 	VERB
 	ADJECTIVE
 	SUFFIX
@@ -60,11 +60,10 @@ func (d *DictRequest) RegisterUserDict(host string) (string, error) {
 		urlParam.Set("priority", strconv.Itoa(*d.Priority))
 	}
 	endpoint := uri + "?" + urlParam.Encode()
-	resp, err := util.HttpPost(endpoint, nil)
+	resp, err := util.HTTPPost(endpoint, nil)
 	if err != nil {
 		return "", err
 	}
 
 	return *(*string)(unsafe.Pointer(&resp)), nil
-
 }

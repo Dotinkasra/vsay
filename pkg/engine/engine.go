@@ -24,13 +24,13 @@ func (e *Engine) MyHost() string {
 
 func (e *Engine) ShowSpeakers() []speaker.Speaker {
 	uri, _ := url.JoinPath(e.MyHost(), "speakers")
-	body, err := util.HttpGet(uri)
+	body, err := util.HTTPGet(uri)
 	if err != nil {
 		log.Panic(err)
 	}
 
 	var speakers []speaker.Speaker
-	if err := json.Unmarshal(body, &speakers); err != nil {
+	if err = json.Unmarshal(body, &speakers); err != nil {
 		log.Panic(err)
 	}
 	return speakers
@@ -38,12 +38,12 @@ func (e *Engine) ShowSpeakers() []speaker.Speaker {
 
 func (e *Engine) ShowUserDict() map[string]dictionary.Dictionary {
 	uri, _ := url.JoinPath(e.MyHost(), "user_dict")
-	body, err := util.HttpGet(uri)
+	body, err := util.HTTPGet(uri)
 	if err != nil {
 		log.Panic(err)
 	}
 	var userDict map[string]dictionary.Dictionary
-	if err := json.Unmarshal(body, &userDict); err != nil {
+	if err = json.Unmarshal(body, &userDict); err != nil {
 		log.Panic(err)
 	}
 	return userDict
@@ -55,12 +55,11 @@ func (e *Engine) DeleteDict(uuid string) error {
 		color.Red(fmt.Sprintln("Error: ホスト名かポートを間違えている可能性があります。"))
 		log.Panic(err)
 	}
-	body, err := util.HttpDelete(uri, nil)
+	body, err := util.HTTPDelete(uri, nil)
 	if err != nil {
 		color.Red(fmt.Sprintln("Error: "))
 		log.Panic(err)
 	}
 	fmt.Println(string(body))
 	return err
-
 }

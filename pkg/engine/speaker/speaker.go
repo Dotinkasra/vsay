@@ -38,17 +38,17 @@ type AudioQuery struct {
 }
 
 type Speaker struct {
-	Name               string  `json:"name"`
-	Uuid               string  `json:"speaker_uuid"`
-	Styles             []Style `json:"styles"`
-	Version            string  `json:"version"`
-	Supported_features struct {
-		Permited_synchesis_morphing string `json:"permitted_synthesis_morphing"`
+	Name              string  `json:"name"`
+	UUID              string  `json:"speaker_uuid"`
+	Styles            []Style `json:"styles"`
+	Version           string  `json:"version"`
+	SupportedFeatures struct {
+		PermitedSynchesisMorphing string `json:"permitted_synthesis_morphing"`
 	} `json:"supported_features"`
 }
 
 type Style struct {
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 	Type string `json:"type"`
 }
@@ -56,18 +56,18 @@ type Style struct {
 func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
 	urlParam := url.Values{}
 	urlParam.Set("text", text)
-	urlParam.Set("speaker", strconv.Itoa(s.Id))
+	urlParam.Set("speaker", strconv.Itoa(s.ID))
 
 	uri, _ := url.JoinPath(host, "audio_query")
 	endpoint := uri + "?" + urlParam.Encode()
 
-	body, err := util.HttpPost(endpoint, nil)
+	body, err := util.HTTPPost(endpoint, nil)
 	if err != nil {
 		log.Panic(err)
 	}
 
 	var query AudioQuery
-	if err := json.Unmarshal(body, &query); err != nil {
+	if err = json.Unmarshal(body, &query); err != nil {
 		log.Panic(err)
 	}
 	return query
@@ -76,12 +76,12 @@ func (s *Style) CreateAudioQuery(host string, text string) AudioQuery {
 func (s *Style) GetAudio(host string, query AudioQuery) []byte {
 	jsonQuery, _ := json.Marshal(query)
 	urlParam := url.Values{}
-	urlParam.Set("speaker", strconv.Itoa(s.Id))
+	urlParam.Set("speaker", strconv.Itoa(s.ID))
 
 	uri, _ := url.JoinPath(host, "synthesis")
 	endpoint := uri + "?" + urlParam.Encode()
 
-	body, err := util.HttpPost(endpoint, bytes.NewBuffer(jsonQuery))
+	body, err := util.HTTPPost(endpoint, bytes.NewBuffer(jsonQuery))
 	if err != nil {
 		log.Panic(err)
 	}

@@ -9,7 +9,7 @@ import (
 )
 
 type Ls struct {
-	SubCommand
+	Cmd
 }
 
 func (scmd *Ls) GetFlags() []cli.Flag {
@@ -34,17 +34,16 @@ func showSpeakers(e engine.Engine) {
 	for i, s := range e.ShowSpeakers() {
 		color.Red(fmt.Sprintf("%d: %s\n", i, s.Name))
 		for j, style := range s.Styles {
-			color.Green(fmt.Sprintf("\t%d: %d: %s\n", j, style.Id, style.Name))
+			color.Green(fmt.Sprintf("\t%d: %d: %s\n", j, style.ID, style.Name))
 		}
 	}
 }
 
-func showDict(e engine.Engine) error {
+func showDict(e engine.Engine) {
 	for id, d := range e.ShowUserDict() {
 		color.Red(fmt.Sprintf("%s:\n", id))
 		color.Green(fmt.Sprintf("\tID: %v\n\t単語: %v\n\t読み: %v\n\tアクセント: %v\n", d.ContextID, d.Surface, d.Yomi, d.AccentType))
 	}
-	return nil
 }
 
 func (scmd *Ls) Action(c *cli.Context) error {

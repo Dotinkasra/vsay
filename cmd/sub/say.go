@@ -16,7 +16,7 @@ import (
 )
 
 type Say struct {
-	SubCommand
+	Cmd
 }
 
 func (scmd *Say) GetFlags() []cli.Flag {
@@ -99,11 +99,10 @@ func (scmd *Say) Action(c *cli.Context) error {
 		sp := speakers[c.Int("number")]
 		st := sp.Styles[c.Int("style")]
 		style = st
-
 	} else {
 		for _, sp := range speakers {
 			for _, st := range sp.Styles {
-				if st.Id == c.Int("id") {
+				if st.ID == c.Int("id") {
 					style = st
 				}
 			}

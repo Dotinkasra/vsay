@@ -18,7 +18,10 @@ func PlayAudio(data []byte) {
 	}
 	defer st.Close()
 
-	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+	if err != nil {
+		log.Panic(err)
+	}
 	done := make(chan bool)
 	speaker.Play(beep.Seq(st, beep.Callback(func() {
 		done <- true
