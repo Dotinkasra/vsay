@@ -16,13 +16,13 @@ func (scmd Install) GetFlags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     "path",
 			Aliases:  []string{"i"},
-			Usage:    "The surface form of the `word`.",
+			Usage:    "If installing from a local file, specify the file path.",
 			Required: false,
 		},
 		&cli.StringFlag{
 			Name:     "link",
 			Aliases:  []string{"l"},
-			Usage:    "Pronunciation of words (`katakana`)",
+			Usage:    "Specify if you wanna install from a URL",
 			Required: false,
 		},
 	}
