@@ -26,7 +26,7 @@ type ShowSpeaker struct {
 }
 
 func (scmd *Say) GetFlags() []cli.Flag {
-	sayFlags := []cli.Flag{
+	flags := []cli.Flag{
 		&cli.IntFlag{
 			Name:     "id",
 			Usage:    "Style `ID`. This takes priority over the speaker number option.",
@@ -93,7 +93,7 @@ func (scmd *Say) GetFlags() []cli.Flag {
 			Required: false,
 		},
 	}
-	return sayFlags
+	return flags
 }
 
 func (scmd *Say) Action(c *cli.Context) error {

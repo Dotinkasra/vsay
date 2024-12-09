@@ -33,7 +33,7 @@ type ShowDict struct {
 }
 
 func (scmd *AddDict) GetFlags() []cli.Flag {
-	lsFlags := []cli.Flag{
+	flags := []cli.Flag{
 		&cli.StringFlag{
 			Name:     "surface",
 			Aliases:  []string{"w"},
@@ -64,7 +64,7 @@ func (scmd *AddDict) GetFlags() []cli.Flag {
 			Required: false,
 		},
 	}
-	return lsFlags
+	return flags
 }
 
 func (scmd *AddDict) Action(c *cli.Context) error {
