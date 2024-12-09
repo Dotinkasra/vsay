@@ -31,6 +31,7 @@ func MakeFlags(scmd sub.Cmd) []cli.Flag {
 func main() {
 	say := sub.Say{}
 	dict := sub.Dict{}
+	install := sub.Install{}
 
 	app := cli.NewApp()
 	app.Name = "vsay"
@@ -39,10 +40,9 @@ func main() {
 
 	app.Commands = []*cli.Command{
 		{
-			Name:    "say",
-			Aliases: []string{"s"},
-			Usage:   "Say something",
-			Flags:   MakeFlags(&say),
+			Name:  "say",
+			Usage: "Say something",
+			Flags: MakeFlags(&say),
 			Action: func(c *cli.Context) error {
 				return say.Action(c)
 			},
@@ -59,9 +59,8 @@ func main() {
 			},
 		},
 		{
-			Name:    "dict",
-			Aliases: []string{"d"},
-			Usage:   "Show dictionary",
+			Name:  "dict",
+			Usage: "Show dictionary",
 			Subcommands: []*cli.Command{
 				{
 					Name:    "add",
@@ -90,6 +89,14 @@ func main() {
 						return dict.ShowDict.Action(c)
 					},
 				},
+			},
+		},
+		{
+			Name:  "install",
+			Usage: "Show version",
+			Flags: MakeFlags(&install),
+			Action: func(c *cli.Context) error {
+				return install.Action(c)
 			},
 		},
 	}
