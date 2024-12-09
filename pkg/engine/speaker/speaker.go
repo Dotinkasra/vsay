@@ -8,6 +8,8 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strconv"
 	"vsay/pkg/util"
 )
@@ -106,41 +108,54 @@ func InitializeSpeaker(host string, sytleID int, skipReinit bool) error {
 	return nil
 }
 
-func InstallAivmModels(host string, filePath string, aivmURL string) []byte {
-	uri, _ := url.JoinPath(host, "install_aivm_model")
+func InstallAivmModels(host string, filePath string, aivmURL string) ([]byte, error) {
+	uri, _ := url.JoinPath(host, "aivm_models", "install")
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
-	fileWriter, err := writer.CreateFormFile("file", filePath)
-
-	if err != nil {
-		log.Panic(err)
+	if filePath != "" {
+		fileWriter, err := writer.CreateFormFile("file", filepath.Base(filePath))
+		if err != nil {
+			return nil, err
+		}
+		file, err := os.Open(filePath)
+		if err != nil {
+			return nil, err
+		}
+		defer file.Close()
+		_, err = io.Copy(fileWriter, file)
+		if err != nil {
+			return nil, err
+		}
 	}
-	_, err = io.Copy(fileWriter, bytes.NewReader([]byte{}))
-	if err != nil {
-		log.Panic(err)
-	}
 
-	err = writer.WriteField("url", aivmURL)
-	if err != nil {
-		log.Panic(err)
+	if filePath != "" {
+		// URLフィールドの設定
+		encodedURL, err := url.Parse(aivmURL)
+		if err != nil {
+			return nil, err
+		}
+		err = writer.WriteField("url", encodedURL.String())
+		if err != nil {
+			return nil, err
+		}
 	}
-
 	writer.Close()
+
 	req, err := http.NewRequest(http.MethodPost, uri, body)
 	if err != nil {
-		log.Panic(err)
+		return nil, err
 	}
 
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	req.Header.Set("Accept", "*/*")
+	req.ContentLength = int64(body.Len())
 
 	resp, err := util.HTTPPostWithMultipart(req)
 	if err != nil {
-		log.Panic(err)
-		return nil
+		return nil, err
 	}
-	return resp
+	return resp, nil
 }
 
 func ShowSpeakers(myHost string) []Speaker {
