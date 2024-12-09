@@ -31,7 +31,7 @@ USAGE:
 COMMANDS:
    say      Say something
    dict     Show dictionary
-   install  Show version
+   install  Install models
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:

@@ -93,7 +93,7 @@ func main() {
 		},
 		{
 			Name:  "install",
-			Usage: "Show version",
+			Usage: "Install models",
 			Flags: MakeFlags(&install),
 			Action: func(c *cli.Context) error {
 				return install.Action(c)
