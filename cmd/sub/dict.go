@@ -15,19 +15,24 @@ import (
 )
 
 type Dict struct {
-	DictAdd
-	DictDelete
+	AddDict
+	DeleteDict
+	ShowDict
 }
 
-type DictAdd struct {
+type AddDict struct {
 	Cmd
 }
 
-type DictDelete struct {
+type DeleteDict struct {
 	Cmd
 }
 
-func (scmd *DictAdd) GetFlags() []cli.Flag {
+type ShowDict struct {
+	Cmd
+}
+
+func (scmd *AddDict) GetFlags() []cli.Flag {
 	lsFlags := []cli.Flag{
 		&cli.StringFlag{
 			Name:     "surface",
@@ -62,8 +67,7 @@ func (scmd *DictAdd) GetFlags() []cli.Flag {
 	return lsFlags
 }
 
-func (scmd *DictAdd) Action(c *cli.Context) error {
-	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+func (scmd *AddDict) Action(c *cli.Context) error {
 	dictRequest := dictionary.DictRequest{}
 	dictRequest.Surface = c.String("surface")
 	dictRequest.Pronunciation = c.String("pronunciation")
@@ -92,7 +96,9 @@ func (scmd *DictAdd) Action(c *cli.Context) error {
 		p := c.Int("priority")
 		dictRequest.Priority = &p
 	}
-	result, err := dictRequest.RegisterUserDict(e.MyHost())
+
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+	result, err := dictRequest.RegisterUserDict(e)
 	if err != nil {
 		color.Red(fmt.Sprintln("Error"))
 		log.Panic(err)
@@ -102,13 +108,12 @@ func (scmd *DictAdd) Action(c *cli.Context) error {
 	return nil
 }
 
-func (scmd *DictDelete) GetFlags() []cli.Flag {
+func (scmd *DeleteDict) GetFlags() []cli.Flag {
 	lsFlags := []cli.Flag{}
 	return lsFlags
 }
 
-func (scmd *DictDelete) Action(c *cli.Context) error {
-	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+func (scmd *DeleteDict) Action(c *cli.Context) error {
 	uuid := c.Args().First()
 	if uuid == "" {
 		stdin := os.Stdin
@@ -120,11 +125,27 @@ func (scmd *DictDelete) Action(c *cli.Context) error {
 	}
 	uuid = strings.TrimSpace(uuid)
 	uuid = strings.TrimSuffix(uuid, "\n")
-	err := e.DeleteDict(uuid)
+
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+	err := dictionary.DeleteDict(e.MyHost(), uuid)
 	if err != nil {
 		log.Panic(err)
 	}
 	color.Green(fmt.Sprintln("Success"))
 
+	return nil
+}
+
+func (scmd *ShowDict) GetFlags() []cli.Flag {
+	lsFlags := []cli.Flag{}
+	return lsFlags
+}
+
+func (scmd *ShowDict) Action(c *cli.Context) error {
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+	for id, d := range dictionary.ShowUserDict(e.MyHost()) {
+		color.Red(fmt.Sprintf("%s:\n", id))
+		color.Green(fmt.Sprintf("\tID: %v\n\t単語: %v\n\t読み: %v\n\tアクセント: %v\n", d.ContextID, d.Surface, d.Yomi, d.AccentType))
+	}
 	return nil
 }

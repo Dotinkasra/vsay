@@ -52,3 +52,19 @@ func HTTPDelete(url string, body io.Reader) ([]byte, error) {
 
 	return io.ReadAll(resp.Body)
 }
+
+func HTTPPostWithMultipart(req *http.Request) ([]byte, error) {
+	client := new(http.Client)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if !(resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNoContent) {
+		return nil, errors.New(resp.Status)
+	}
+
+	return io.ReadAll(resp.Body)
+
+}

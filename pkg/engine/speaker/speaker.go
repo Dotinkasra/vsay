@@ -3,7 +3,10 @@ package speaker
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"log"
+	"mime/multipart"
+	"net/http"
 	"net/url"
 	"strconv"
 	"vsay/pkg/util"
@@ -86,4 +89,70 @@ func (s *Style) GetAudio(host string, query AudioQuery) []byte {
 		log.Panic(err)
 	}
 	return body
+}
+
+func InitializeSpeaker(host string, sytleID int, skipReinit bool) error {
+	urlParam := url.Values{}
+	urlParam.Add("speaker", strconv.Itoa(sytleID))
+	urlParam.Add("skip_reinit", strconv.FormatBool(skipReinit))
+
+	uri, _ := url.JoinPath(host, "initialize_speaker")
+	endpoint := uri + "?" + urlParam.Encode()
+
+	_, err := util.HTTPGet(endpoint)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func InstallAivmModels(host string, filePath string, aivmURL string) []byte {
+	uri, _ := url.JoinPath(host, "install_aivm_model")
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	fileWriter, err := writer.CreateFormFile("file", filePath)
+
+	if err != nil {
+		log.Panic(err)
+	}
+	_, err = io.Copy(fileWriter, bytes.NewReader([]byte{}))
+	if err != nil {
+		log.Panic(err)
+	}
+
+	err = writer.WriteField("url", aivmURL)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	writer.Close()
+	req, err := http.NewRequest(http.MethodPost, uri, body)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+	req.Header.Set("Accept", "*/*")
+
+	resp, err := util.HTTPPostWithMultipart(req)
+	if err != nil {
+		log.Panic(err)
+		return nil
+	}
+	return resp
+}
+
+func ShowSpeakers(myHost string) []Speaker {
+	uri, _ := url.JoinPath(myHost, "speakers")
+	body, err := util.HTTPGet(uri)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	var speakers []Speaker
+	if err = json.Unmarshal(body, &speakers); err != nil {
+		log.Panic(err)
+	}
+	return speakers
 }

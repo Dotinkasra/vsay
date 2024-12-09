@@ -1,10 +1,16 @@
 package dictionary
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/url"
 	"strconv"
 	"unsafe"
+	"vsay/pkg/engine"
 	"vsay/pkg/util"
+
+	"github.com/fatih/color"
 )
 
 type Dictionary struct {
@@ -47,8 +53,8 @@ func (w WordType) String() string {
 	return [...]string{"PROPER_NOUN", "COMMON_NOUN", "VERB", "ADJECTIVE", "SUFFIX"}[w]
 }
 
-func (d *DictRequest) RegisterUserDict(host string) (string, error) {
-	uri, _ := url.JoinPath(host, "user_dict_word")
+func (d *DictRequest) RegisterUserDict(e engine.Engine) (string, error) {
+	uri, _ := url.JoinPath(e.MyHost(), "user_dict_word")
 	urlParam := url.Values{}
 	urlParam.Set("surface", d.Surface)
 	urlParam.Set("pronunciation", d.Pronunciation)
@@ -66,4 +72,32 @@ func (d *DictRequest) RegisterUserDict(host string) (string, error) {
 	}
 
 	return *(*string)(unsafe.Pointer(&resp)), nil
+}
+
+func ShowUserDict(myHost string) map[string]Dictionary {
+	uri, _ := url.JoinPath(myHost, "user_dict")
+	body, err := util.HTTPGet(uri)
+	if err != nil {
+		log.Panic(err)
+	}
+	var userDict map[string]Dictionary
+	if err = json.Unmarshal(body, &userDict); err != nil {
+		log.Panic(err)
+	}
+	return userDict
+}
+
+func DeleteDict(myHost string, uuid string) error {
+	uri, err := url.JoinPath(myHost, "user_dict_word", uuid)
+	if err != nil {
+		color.Red(fmt.Sprintln("Error: ホスト名かポートを間違えている可能性があります。"))
+		log.Panic(err)
+	}
+	body, err := util.HTTPDelete(uri, nil)
+	if err != nil {
+		color.Red(fmt.Sprintln("Error: "))
+		log.Panic(err)
+	}
+	fmt.Println(string(body))
+	return err
 }

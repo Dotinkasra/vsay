@@ -29,7 +29,6 @@ func MakeFlags(scmd sub.Cmd) []cli.Flag {
 }
 
 func main() {
-	ls := sub.Ls{}
 	say := sub.Say{}
 	dict := sub.Dict{}
 
@@ -40,21 +39,23 @@ func main() {
 
 	app.Commands = []*cli.Command{
 		{
-			Name:    "ls",
-			Aliases: []string{"l"},
-			Usage:   "Show speakers",
-			Flags:   MakeFlags(&ls),
-			Action: func(c *cli.Context) error {
-				return ls.Action(c)
-			},
-		},
-		{
 			Name:    "say",
 			Aliases: []string{"s"},
 			Usage:   "Say something",
 			Flags:   MakeFlags(&say),
 			Action: func(c *cli.Context) error {
 				return say.Action(c)
+			},
+			Subcommands: []*cli.Command{
+				{
+					Name:    "ls",
+					Aliases: []string{"l"},
+					Usage:   "Show speakers",
+					Flags:   MakeFlags(&say.ShowSpeaker),
+					Action: func(c *cli.Context) error {
+						return say.ShowSpeaker.Action(c)
+					},
+				},
 			},
 		},
 		{
@@ -66,18 +67,27 @@ func main() {
 					Name:    "add",
 					Aliases: []string{"a"},
 					Usage:   "Add word",
-					Flags:   MakeFlags(&dict.DictAdd),
+					Flags:   MakeFlags(&dict.AddDict),
 					Action: func(c *cli.Context) error {
-						return dict.DictAdd.Action(c)
+						return dict.AddDict.Action(c)
 					},
 				},
 				{
 					Name:    "delete",
 					Aliases: []string{"r"},
 					Usage:   "Remove word",
-					Flags:   MakeFlags(&dict.DictDelete),
+					Flags:   MakeFlags(&dict.DeleteDict),
 					Action: func(c *cli.Context) error {
-						return dict.DictDelete.Action(c)
+						return dict.DeleteDict.Action(c)
+					},
+				},
+				{
+					Name:    "ls",
+					Aliases: []string{"l"},
+					Usage:   "Show dictionary",
+					Flags:   MakeFlags(&dict.ShowDict),
+					Action: func(c *cli.Context) error {
+						return dict.ShowDict.Action(c)
 					},
 				},
 			},

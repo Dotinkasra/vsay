@@ -12,10 +12,16 @@ import (
 	"vsay/pkg/engine"
 	"vsay/pkg/engine/speaker"
 
+	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 )
 
 type Say struct {
+	Cmd
+	ShowSpeaker
+}
+
+type ShowSpeaker struct {
 	Cmd
 }
 
@@ -93,7 +99,7 @@ func (scmd *Say) GetFlags() []cli.Flag {
 func (scmd *Say) Action(c *cli.Context) error {
 	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
 
-	speakers := e.ShowSpeakers()
+	speakers := speaker.ShowSpeakers(e.MyHost())
 	var style speaker.Style
 	if c.Int("id") == 0 {
 		sp := speakers[c.Int("number")]
@@ -139,6 +145,20 @@ func (scmd *Say) Action(c *cli.Context) error {
 	if c.Bool("b64") {
 		b64Audio := base64.StdEncoding.EncodeToString(rawAudio)
 		fmt.Print(b64Audio)
+	}
+	return nil
+}
+
+func (scmd *ShowSpeaker) GetFlags() []cli.Flag {
+	return []cli.Flag{}
+}
+func (scmd *ShowSpeaker) Action(c *cli.Context) error {
+	e := engine.Engine{Host: c.String("host"), Port: c.Int("port")}
+	for i, s := range speaker.ShowSpeakers(e.MyHost()) {
+		color.Red(fmt.Sprintf("%d: %s\n", i, s.Name))
+		for j, style := range s.Styles {
+			color.Green(fmt.Sprintf("\t%d: %d: %s\n", j, style.ID, style.Name))
+		}
 	}
 	return nil
 }
