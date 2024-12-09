@@ -117,99 +117,6 @@ $ vsay say ls -p 50021
         1: 39: 喜び
         2: 40: ツンギレ
         3: 41: 悲しみ
-6: 白上虎太郎
-        0: 12: ふつう
-        1: 32: わーい
-        2: 33: びくびく
-        3: 34: おこ
-        4: 35: びえーん
-7: 青山龍星
-        0: 13: ノーマル
-        1: 81: 熱血
-        2: 82: 不機嫌
-        3: 83: 喜び
-        4: 84: しっとり
-        5: 85: かなしみ
-        6: 86: 囁き
-8: 冥鳴ひまり
-        0: 14: ノーマル
-9: 九州そら
-        0: 16: ノーマル
-        1: 15: あまあま
-        2: 18: ツンツン
-        3: 17: セクシー
-        4: 19: ささやき
-10: もち子さん
-        0: 20: ノーマル
-        1: 66: セクシー／あん子
-        2: 77: 泣き
-        3: 78: 怒り
-        4: 79: 喜び
-        5: 80: のんびり
-11: 剣崎雌雄
-        0: 21: ノーマル
-12: WhiteCUL
-        0: 23: ノーマル
-        1: 24: たのしい
-        2: 25: かなしい
-        3: 26: びえーん
-13: 後鬼
-        0: 27: 人間ver.
-        1: 28: ぬいぐるみver.
-        2: 87: 人間（怒り）ver.
-        3: 88: 鬼ver.
-14: No.7
-        0: 29: ノーマル
-        1: 30: アナウンス
-        2: 31: 読み聞かせ
-15: ちび式じい
-        0: 42: ノーマル
-16: 櫻歌ミコ
-        0: 43: ノーマル
-        1: 44: 第二形態
-        2: 45: ロリ
-17: 小夜/SAYO
-        0: 46: ノーマル
-18: ナースロボ＿タイプＴ
-        0: 47: ノーマル
-        1: 48: 楽々
-        2: 49: 恐怖
-        3: 50: 内緒話
-19: †聖騎士 紅桜†
-        0: 51: ノーマル
-20: 雀松朱司
-        0: 52: ノーマル
-21: 麒ヶ島宗麟
-        0: 53: ノーマル
-22: 春歌ナナ
-        0: 54: ノーマル
-23: 猫使アル
-        0: 55: ノーマル
-        1: 56: おちつき
-        2: 57: うきうき
-24: 猫使ビィ
-        0: 58: ノーマル
-        1: 59: おちつき
-        2: 60: 人見知り
-25: 中国うさぎ
-        0: 61: ノーマル
-        1: 62: おどろき
-        2: 63: こわがり
-        3: 64: へろへろ
-26: 栗田まろん
-        0: 67: ノーマル
-27: あいえるたん
-        0: 68: ノーマル
-28: 満別花丸
-        0: 69: ノーマル
-        1: 70: 元気
-        2: 71: ささやき
-        3: 72: ぶりっ子
-        4: 73: ボーイ
-29: 琴詠ニア
-        0: 74: ノーマル
-30: Voidoll
-        0: 89: ノーマル
 ```
 
 #### 音声の作成
@@ -310,6 +217,7 @@ Success
 ```
 
 #### （試験的）モデルデータをインストールする
+**AivisSpeechにしか対応していません**
 ```bash
 $ vsay install -h
 NAME:
@@ -319,11 +227,14 @@ USAGE:
    vsay install [command options]
 
 OPTIONS:
-   --host value                  Host address (default: "http://localhost")
-   --port value, -p value        Port number (default: 10101)
-   --path word, -i word          If installing from a local file, specify the file path.
-   --link katakana, -l katakana  Specify if you wanna install from a URL
-   --help, -h                    show help
+   --host value            Host address (default: "http://localhost")
+   --port value, -p value  Port number (default: 10101)
+   --path path, -i path    If installing from a local file, specify the file path.
+   --link URL, -l URL      Specify if you wanna install from a URL
+   --help, -h              show help
+```
+```bash
+$ vsay install -i /Users/name/Downloads/model.aivmx
 ```
 
 # 未実装の機能
