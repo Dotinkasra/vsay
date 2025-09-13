@@ -12,8 +12,16 @@ VOICEVOX Engineまたはその互換APIサーバへのリクエストをコマ�
 
 ```bash
 $ git clone https://github.com/Dotinkasra/vsay
-$ cd vsay/cmd/vasy
-$ go build 
+$ cd vsay
+$ go build cmd/vsay/main.go
+```
+
+## Dockerを使ったビルド
+```bash
+$ git clone https://github.com/Dotinkasra/vsay
+$ cd vsay
+$ docker build --tag vsay-builder -f Dockerfile .
+$ docker run -it --rm -v .:/usr/src/vsay -w /usr/src/vsay go build cmd/vsay/main.go
 ```
 
 ## 使用方法
