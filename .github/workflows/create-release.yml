@@ -1,19 +1,19 @@
-name: Build and Release 
+name: Build and Release
 
 on:
   push:
-    tags: 
+    tags:
       - 'v*'
 
 permissions:
   contents: write
 
 jobs:
-  build-linux: 
+  build-linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goarch: [amd64] 
+        goarch: [amd64]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
         env:
           GOOS: linux
           GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1 
+          CGO_ENABLED: 1
         run: |
           OUTPUT_NAME="vsay-linux-${{ matrix.goarch }}"
           go build -v -o "${OUTPUT_NAME}" ./cmd/vsay/main.go
@@ -70,7 +70,7 @@ jobs:
         env:
           GOOS: darwin
           GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1 # macOSではCGOを有効にする
+          CGO_ENABLED: 1
         run: |
           OUTPUT_NAME="vsay-darwin-${{ matrix.goarch }}"
           go build -v -o "${OUTPUT_NAME}" ./cmd/vsay/main.go
@@ -103,7 +103,7 @@ jobs:
         env:
           GOOS: windows
           GOARCH: amd64
-          CGO_ENABLED: 1 # WindowsではCGOを有効にする
+          CGO_ENABLED: 1
         run: |
           $OUTPUT_NAME="vsay-windows-amd64.exe"
           go build -v -o "$OUTPUT_NAME" ./cmd/vsay/main.go
@@ -120,9 +120,13 @@ jobs:
           path: vsay-windows-amd64.exe*.tar.gz
 
   release:
-    needs: [build-linux, build-macos, build-windows] 
+    needs: [build-linux, build-macos, build-windows]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
