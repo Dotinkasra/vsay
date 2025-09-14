@@ -2,3 +2,4 @@
 .Spotlight
 .DS_Store
 dist/
+.cz-config.js
