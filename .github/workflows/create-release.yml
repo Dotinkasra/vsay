@@ -40,7 +40,7 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-          CGO_ENABLED: 1 # CGOを有効にする
+          CGO_ENABLED: ${{ matrix.goos == 'linux' && '1' || '0' }} # Linuxの場合のみCGOを有効にする
         run: |
           OUTPUT_NAME="vsay-${{ matrix.goos }}-${{ matrix.goarch }}"
           if [ "${{ matrix.goos }}" = "windows" ]; then
